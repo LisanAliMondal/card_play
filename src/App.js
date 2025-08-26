@@ -1,25 +1,33 @@
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import data from "./data";
+import Tours from "./components/Tour";
+import { useState } from "react";
 
-function App() {
+const App = () => {
+  const [tours, setTours] = useState(data);
+
+  // when not intereseted is clicked this removeTour function is called and based on id passed in the function
+  // the filter method is used to remove that data belonging to passed id
+  function removeTour(id){
+    const newTours = tours.filter( tour => tour.id !== id);
+    setTours(newTours);
+  }
+
+  // when all tours are clicked not interested then reinitializing all data to tours array
+  if(tours.length === 0){
+    return(
+      <div className="refresh">
+        <h2>Sorry 😔...... <br/>No More Tours Left</h2>
+        <button onClick={() => setTours(data)} className="btn-white">Refresh</button>
+      </div>
+    )
+  }
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+     {/* removeTour and tours data are passed as props in tours component */}
+      <Tours tours={tours} removeTour={removeTour}> </Tours>
     </div>
   );
-}
+};
 
 export default App;
